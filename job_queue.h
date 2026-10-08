@@ -7,10 +7,13 @@ struct job_queue {
   int head;
   int tail;  
 
-  int total_capacity;     // how large our currently allocated queue is
-  int current_capacity;   // how much data we're actually storing
+  int capacity;     // how large our currently allocated queue is
   struct entry **queue;   // queue to actually store our data
   pthread_mutex_t mutex;  // lock to ensure no races
+
+  bool is_destroyed;
+  bool is_full;
+  bool is_empty;
 };
 
 // Initialise a job queue with the given capacity.  The queue starts out
