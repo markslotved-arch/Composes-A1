@@ -4,7 +4,13 @@
 #include <pthread.h>
 
 struct job_queue {
-  int dummy;
+  int head;
+  int tail;  
+
+  int total_capacity;     // how large our currently allocated queue is
+  int current_capacity;   // how much data we're actually storing
+  struct entry **queue;   // queue to actually store our data
+  pthread_mutex_t mutex;  // lock to ensure no races
 };
 
 // Initialise a job queue with the given capacity.  The queue starts out
@@ -18,7 +24,7 @@ int job_queue_destroy(struct job_queue *job_queue);
 // Push an element onto the end of the job queue.  Blocks if the
 // job_queue is full (its size is equal to its capacity).  Returns
 // non-zero on error.  It is an error to push a job onto a queue that
-// has been destroyed.
+// has been destroyed.datadata
 int job_queue_push(struct job_queue *job_queue, void *data);
 
 // Pop an element from the front of the job queue.  Blocks if the
